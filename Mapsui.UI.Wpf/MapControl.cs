@@ -62,6 +62,8 @@ namespace Mapsui.UI.Wpf
 
             Map = new Map();
 
+            Animation.AnimationTimer = new AnimationTimer(this);
+
             Loaded += MapControlLoaded;
             MouseLeftButtonDown += MapControlMouseLeftButtonDown;
             MouseLeftButtonUp += MapControlMouseLeftButtonUp;
@@ -525,6 +527,9 @@ namespace Mapsui.UI.Wpf
 
             args.Surface.Canvas.Scale(PixelDensity, PixelDensity);
 
+            if (Animation.NeedsUpdate)
+                Animation.UpdateAnimations();
+
             Renderer.Render(args.Surface.Canvas, new Viewport(Viewport), Map.Layers, Map.Widgets, Map.BackColor);
         }
         
@@ -532,6 +537,9 @@ namespace Mapsui.UI.Wpf
         {
             if (Renderer == null) return;
             if (_map == null) return;
+
+            if (Animation.NeedsUpdate)
+                Animation.UpdateAnimations();
 
             Renderer.Render(WpfCanvas, Viewport, _map.Layers, Map.Widgets, _map.BackColor);
         }
